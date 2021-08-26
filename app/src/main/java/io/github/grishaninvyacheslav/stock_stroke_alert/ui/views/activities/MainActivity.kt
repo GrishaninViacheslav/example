@@ -1,4 +1,4 @@
-package io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.activity
+package io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.activities
 
 import android.os.Bundle
 import by.kirich1409.viewbindingdelegate.CreateMethod
