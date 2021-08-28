@@ -69,6 +69,10 @@ class TickerSearchFragment : MvpAppCompatFragment(), BackButtonListener, TickerS
         view.listview.adapter = adapter
     }
 
+    override fun updateSuggestions() {
+        adapter?.notifyDataSetChanged()
+    }
+
     override fun setQueryHint(hint: String) {
         view.search.queryHint = hint
     }

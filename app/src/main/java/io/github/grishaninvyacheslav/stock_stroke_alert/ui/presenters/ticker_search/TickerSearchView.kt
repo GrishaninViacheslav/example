@@ -7,5 +7,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface TickerSearchView : MvpView {
     fun init()
+    fun updateSuggestions()
     fun setQueryHint(hint: String)
 }
