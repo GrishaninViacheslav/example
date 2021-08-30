@@ -8,17 +8,17 @@ import java.util.*
 
 class DebugRepository : ITickersRepository {
     private val sampleData = listOf(
-        Ticker("LION", "Lion Company, Inc"),
-        Ticker("TIGER", "Tiger PLC"),
-        Ticker("DOG", "Dog Holdings Ltd"),
-        Ticker("CAT", "Cat Holdings Limited"),
-        Ticker("RAT", "Rat Systems plc"),
-        Ticker("ELEPHANT", "Elephant Group Holding Ltd"),
-        Ticker("TORTOISE", "Tortoise America Strategy Port CDA USD Ser 21/1Q MNT CASH"),
-        Ticker("FOX", "Fox Msci All Country Asia Ex Japan ETF"),
-        Ticker("COW", "Cow Applications International Corp"),
-        Ticker("DONKEY", "Donkey Motor Corporation Ltd"),
-        Ticker("MONKEY", "Monkey INCOME FUND CLASS C")
+        Ticker("LION", "Lion Company, Inc", "Equity"),
+        Ticker("TIGER", "Tiger PLC", "Equity"),
+        Ticker("DOG", "Dog Holdings Ltd", "Equity"),
+        Ticker("CAT", "Cat Holdings Limited", "Equity"),
+        Ticker("RAT", "Rat Systems plc", "Equity"),
+        Ticker("ELEPHANT", "Elephant Group Holding Ltd", "Equity"),
+        Ticker("TORTOISE", "Tortoise America Strategy Port CDA USD Ser 21/1Q MNT CASH", "Equity"),
+        Ticker("FOX", "Fox Msci All Country Asia Ex Japan ETF", "Equity"),
+        Ticker("COW", "Cow Applications International Corp", "Equity"),
+        Ticker("DONKEY", "Donkey Motor Corporation Ltd", "Equity"),
+        Ticker("MONKEY", "Monkey INCOME FUND CLASS C", "Equity")
     )
 
 

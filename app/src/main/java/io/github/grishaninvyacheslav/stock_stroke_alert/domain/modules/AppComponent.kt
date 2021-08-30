@@ -14,7 +14,8 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         CiceroneModule::class,
-        RepositoryModule::class,
+        AlphaVantageApiModule::class,
+        AlphaVantageRepositoryModule::class,
         UiSchedulerModule::class
     ]
 )
