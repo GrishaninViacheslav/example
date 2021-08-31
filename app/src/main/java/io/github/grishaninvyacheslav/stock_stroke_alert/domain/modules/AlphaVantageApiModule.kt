@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import io.github.grishaninvyacheslav.stock_stroke_alert.BuildConfig
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.alphavantage.IAlphaVantageDataSource
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.alphavantage.IAlphaVantageDataSource
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -17,12 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
-
 @Module
 class AlphaVantageApiModule {
+
     @Named("baseUrl")
     @Provides
-    fun provideBaseUrl(): String = "https://www.alphavantage.co/"
+    fun baseUrl(): String = "https://www.alphavantage.co/"
 
     @Provides
     fun provideApi(@Named("baseUrl") baseUrl: String, gson: Gson): IAlphaVantageDataSource =
@@ -37,7 +37,6 @@ class AlphaVantageApiModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(IAlphaVantageDataSource::class.java)
-
 
     @Singleton
     @Provides

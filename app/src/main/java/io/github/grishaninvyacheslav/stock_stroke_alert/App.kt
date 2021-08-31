@@ -1,6 +1,7 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert
 
 import android.app.Application
+import com.github.mikephil.charting.utils.Utils
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.AppComponent
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.AppModule
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.DaggerAppComponent
@@ -19,5 +20,7 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .build()
+
+        //Utils.init(instance)
     }
 }

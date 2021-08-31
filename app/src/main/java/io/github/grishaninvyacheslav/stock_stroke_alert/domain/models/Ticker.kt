@@ -19,3 +19,26 @@ data class Ticker(
     @Expose
     val type: String
 ) : Parcelable
+
+@Parcelize
+data class Quote(
+    @SerializedName("1. open")
+    @Expose
+    val open: String,
+
+    @SerializedName("2. high")
+    @Expose
+    val high: String,
+
+    @SerializedName("3. low")
+    @Expose
+    val low: String,
+
+    @SerializedName("4. close")
+    @Expose
+    val close: String,
+
+    @SerializedName("5. volume")
+    @Expose
+    val volume: String
+) : Parcelable

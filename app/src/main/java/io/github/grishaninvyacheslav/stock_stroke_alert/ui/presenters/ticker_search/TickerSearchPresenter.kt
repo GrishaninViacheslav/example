@@ -4,7 +4,7 @@ import com.github.terrakok.cicerone.Router
 import io.github.grishaninvyacheslav.stock_stroke_alert.App
 import io.github.grishaninvyacheslav.stock_stroke_alert.R
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.ITickersRepository
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.ITickersRepository
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.Screens
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -15,7 +15,7 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 class TickerSearchPresenter(
-    private val disposables: CompositeDisposable = CompositeDisposable(),
+    private val disposables: CompositeDisposable = CompositeDisposable()
 ) :
     MvpPresenter<TickerSearchView>() {
     private var currSuggestionDisposables: CompositeDisposable = CompositeDisposable()
