@@ -10,5 +10,5 @@ import javax.inject.Singleton
 class UiSchedulerModule {
     @Singleton
     @Provides
-    fun uiScheduler(): Scheduler = AndroidSchedulers.mainThread()
+    fun provideUiScheduler(): Scheduler = AndroidSchedulers.mainThread()
 }

@@ -12,5 +12,5 @@ class AlphaVantageRepositoryModule {
 
     @Singleton
     @Provides
-    fun repository(api : IAlphaVantageDataSource): ITickersRepository = AlphaVantageRepository(api)
+    fun provideRepository(api : IAlphaVantageDataSource): ITickersRepository = AlphaVantageRepository(api)
 }

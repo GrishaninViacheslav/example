@@ -10,6 +10,8 @@ interface IAlphaVantageDataSource {
     @GET("query?function=SYMBOL_SEARCH")
     fun symbolSearch(
         @Query("keywords") keywords: String,
+        // TODO: пробовал использовать Interceptor - AlphaVantageApiInterceptor,
+        //             но он почему то не добавляет header для apikey
         @Query("apikey") apikey: String = BuildConfig.ALPHA_VANTAGE_API_KEY
     ): Single<Map<String, List<Ticker>>>
 }

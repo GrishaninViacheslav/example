@@ -8,7 +8,7 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.App
 class AppModule(val app: App) {
 
     @Provides
-    fun app(): App {
+    fun provideApp(): App {
         return app
     }
 

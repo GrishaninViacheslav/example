@@ -15,17 +15,17 @@ class CiceroneModule {
     var cicerone: Cicerone<Router> = Cicerone.create()
 
     @Provides
-    fun cicerone(): Cicerone<Router> = cicerone
+    fun provideCicerone(): Cicerone<Router> = cicerone
 
     @Singleton
     @Provides
-    fun navigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
+    fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
 
     @Singleton
     @Provides
-    fun router(): Router = cicerone.router
+    fun provideRouter(): Router = cicerone.router
 
     @Singleton
     @Provides
-    fun screens(): IScreens = Screens()
+    fun provideScreens(): IScreens = Screens()
 }
