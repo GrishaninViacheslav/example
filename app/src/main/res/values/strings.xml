@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">stock-stroke-alert</string>
+    <string name="ticket_search_hint">Поиск тикера</string>
+    <string name="users_tickers_list_is_empty">Здесь отображаются биржевые тикеры которые отслеживаются вашимими трекерами.\nПока не созданно ни одного трекера</string>
 </resources>
