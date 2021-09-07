@@ -21,7 +21,6 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.ui.BackButtonListener
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker.TickerPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker.TickerView
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker.TrackersRVAdapter
-import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search.TickerSuggestionsRVAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import kotlin.properties.Delegates
@@ -67,7 +66,7 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }
 
     val presenter: TickerPresenter by moxyPresenter {
-        TickerPresenter(arguments?.getParcelable<Ticker>(TICKET_ARG) as Ticker).apply {
+        TickerPresenter(arguments?.getParcelable<Ticker>(TICKER_ARG) as Ticker, getString(R.string.time_days), getString(R.string.time_hours), getString(R.string.time_minutes)).apply {
             App.instance.appComponent.inject(
                 this
             )
@@ -91,12 +90,12 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }.root
 
     companion object {
-        private const val TICKET_ARG = "TICKET"
+        private const val TICKER_ARG = "TICKET"
 
         fun newInstance(ticker: Ticker) = TickerFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(
-                    TICKET_ARG, ticker
+                    TICKER_ARG, ticker
                 )
             }
         }
@@ -109,7 +108,7 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }
 
     override fun setTickerName(name: String) {
-        view.ticketName.text = name
+        view.tickerName.text = name
     }
 
     override fun setCurrQuote(quote: String) {

@@ -6,4 +6,5 @@ import io.reactivex.Single
 interface ITrackersRepository {
     fun getTickerTrackers(symbol: String): Single<List<Tracker>>
     fun addTracker(tracker: Tracker)
+    fun delete(tracker: Tracker)
 }

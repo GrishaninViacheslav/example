@@ -12,4 +12,8 @@ class RoomTrackersRepository(private val db: TrackersRoomDatabase) : ITrackersRe
     override fun addTracker(tracker: Tracker){
         Schedulers.io().scheduleDirect { db.trackersDao.insert(tracker) }
     }
+
+    override fun delete(tracker: Tracker) {
+        Schedulers.io().scheduleDirect { db.trackersDao.delete(tracker) }
+    }
 }

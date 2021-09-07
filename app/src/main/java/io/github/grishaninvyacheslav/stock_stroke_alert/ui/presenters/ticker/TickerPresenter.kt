@@ -14,10 +14,12 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositori
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.Interval
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.alphavantage.GlobalQuote
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.trackers.ITrackersRepository
+import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.IScreens
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import moxy.MvpPresenter
+import java.lang.StringBuilder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -27,6 +29,10 @@ import kotlin.collections.ArrayList
 
 class TickerPresenter(
     private val ticker: Ticker,
+    // TODO: куда вынести эти строки?
+    private val daysStringPlaceholder: String,
+    private val hoursStringPlaceholder: String,
+    private val minutesStringPlaceholder: String,
     private val disposables: CompositeDisposable = CompositeDisposable()
 ) : MvpPresenter<TickerView>() {
     private val intradayPriceLoadObserver =
@@ -109,6 +115,23 @@ class TickerPresenter(
         )
     }
 
+    private fun editTracker(pos: Int) {
+        router.setResultListener(TRACKER_RESULT_KEY) {
+            with(it as Tracker) {
+                viewState.showTrackerItem(pos)
+                trackersRepository.addTracker(this)
+            }
+        }
+        router.setResultListener(TRACKER_REMOVE_RESULT_KEY) {
+            with(it as Tracker) {
+                trackersListPresenter.trackers.remove(this)
+                viewState.updateTrackersList()
+                trackersRepository.delete(this)
+            }
+        }
+        router.navigateTo(screens.tracker(trackersListPresenter.trackers[pos]))
+    }
+
     inner class ChartPresenter : IChartPresenter {
         private var dataObjects = listOf<CandleEntry>()
         private var cds = CandleDataSet(dataObjects, "Label")
@@ -143,7 +166,7 @@ class TickerPresenter(
             }
         }
 
-        override var itemClickListener: ((TrackerItemView) -> Unit)? = null
+        override var itemEditClickListener: ((TrackerItemView) -> Unit)? = null
 
         val trackers = mutableListOf<Tracker>()
 
@@ -152,11 +175,23 @@ class TickerPresenter(
         override fun bindView(view: TrackerItemView) {
             val tracker = trackers[view.pos]
             with(view) {
-                setTriggerProximity(tracker.lastTriggerProximity)
-                setDifferenceValue(tracker.differenceValue)
-                setDifferenceUnits(tracker.differenceUnitType)
-                setDirection(tracker.differenceDirection)
-                setTime(tracker.time)
+                with(tracker) {
+                    setTriggerProximity(lastTriggerProximity!!)
+                    setDifferenceValue(differenceValue!!)
+                    setDifferenceUnits(differenceUnitType!!)
+                    setDirection(differenceDirection!!)
+                    val timeStringBuilder = StringBuilder()
+                    if (days != "0") {
+                        timeStringBuilder.append(String.format(daysStringPlaceholder, days))
+                    }
+                    if (hours != "0") {
+                        timeStringBuilder.append(String.format(hoursStringPlaceholder, hours))
+                    }
+                    if (minutes != "0") {
+                        timeStringBuilder.append(String.format(minutesStringPlaceholder, minutes))
+                    }
+                    setTime(timeStringBuilder.toString())
+                }
             }
         }
 
@@ -177,6 +212,9 @@ class TickerPresenter(
     lateinit var router: Router
 
     @Inject
+    lateinit var screens: IScreens
+
+    @Inject
     lateinit var repository: ITickersRepository
 
     @Inject
@@ -187,8 +225,16 @@ class TickerPresenter(
 
     val chartPresenter = ChartPresenter()
 
+    companion object {
+        // TODO: куда вынести ключи?
+        val TRACKER_RESULT_KEY = "TRACKER"
+        val TRACKER_REMOVE_RESULT_KEY = "REMOVE_TRACKER"
+    }
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        trackersListPresenter.itemEditClickListener =
+            { trackerItemView -> editTracker(trackerItemView.pos) }
         trackersListPresenter.loadTrackers()
         viewState.init()
         loadChartData()
@@ -197,20 +243,22 @@ class TickerPresenter(
     }
 
     fun createTicker() {
-        val tracker = Tracker(
-            trackedTicker = "TSLA",
-            lastTriggerProximity = 95,
-            triggerThreshold = 2,
-            differenceValue = "15.12221",
-            differenceUnitType = "%",
-            differenceDirection = 0,
-            time = "05:32",
-            notifications = "push"
+        router.setResultListener(TRACKER_RESULT_KEY) {
+            with(it as Tracker) {
+                trackersListPresenter.trackers.add(this)
+                viewState.updateTrackersList()
+                viewState.showTrackerItem(trackersListPresenter.trackers.size - 1)
+                trackersRepository.addTracker(this)
+            }
+        }
+        router.navigateTo(
+            screens.tracker(
+                Tracker(
+                    trackedTicker = ticker.symbol,
+                    lastTriggerProximity = 50
+                )
+            )
         )
-        trackersListPresenter.trackers.add(tracker)
-        viewState.updateTrackersList()
-        viewState.showTrackerItem(trackersListPresenter.trackers.size - 1)
-        trackersRepository.addTracker(tracker)
     }
 
     fun backPressed(): Boolean {

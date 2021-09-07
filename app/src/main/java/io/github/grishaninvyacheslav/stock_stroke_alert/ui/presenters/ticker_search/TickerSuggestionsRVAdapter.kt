@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ListViewItemsBinding
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
-import java.util.*
 
 class TickerSuggestionsRVAdapter(
     val presenter: ITickerSuggestionsListPresenter,
@@ -23,7 +21,7 @@ class TickerSuggestionsRVAdapter(
                 false
             )
         ).apply {
-            itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
+            itemView.setOnClickListener { presenter.itemEditClickListener?.invoke(this) }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =

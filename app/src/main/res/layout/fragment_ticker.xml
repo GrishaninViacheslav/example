@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ticket_name"
+        android:id="@+id/ticker_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin"
@@ -35,7 +35,7 @@
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@id/ticket_name"
+        app:layout_constraintLeft_toRightOf="@id/ticker_name"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
 
     <TextView
@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ticket_name" />
+        app:layout_constraintTop_toBottomOf="@id/ticker_name" />
 
     <View
         android:id="@+id/chart_interact_blocker"

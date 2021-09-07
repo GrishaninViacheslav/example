@@ -4,6 +4,7 @@ import dagger.Component
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.main.MainPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker.TickerPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search.TickerSearchPresenter
+import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.tracker.TrackerPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.users_tickers.UsersTickersPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.activities.MainActivity
 import javax.inject.Singleton
@@ -27,4 +28,5 @@ interface AppComponent {
     fun inject(tickerSearchPresenter: TickerSearchPresenter)
     fun inject(usersTickersPresenter: UsersTickersPresenter)
     fun inject(tickerPresenter: TickerPresenter)
+    fun inject(trackerPresenter: TrackerPresenter)
 }

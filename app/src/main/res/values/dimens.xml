@@ -4,4 +4,5 @@
     <dimen name="button_chart_type_switch_size">32dp</dimen>
     <dimen name="margin">10dp</dimen>
     <dimen name="margin_small">3dp</dimen>
+    <dimen name="margin_half">5dp</dimen>
 </resources>

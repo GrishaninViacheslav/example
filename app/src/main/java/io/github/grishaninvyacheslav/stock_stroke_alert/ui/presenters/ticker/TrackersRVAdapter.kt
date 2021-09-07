@@ -5,6 +5,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import io.github.grishaninvyacheslav.stock_stroke_alert.R
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ItemTickerTrackerBinding
 
 class TrackersRVAdapter(
@@ -18,7 +20,7 @@ class TrackersRVAdapter(
                 false
             )
         ).apply {
-            itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
+            itemView.findViewById<MaterialButton>(R.id.button_edit).setOnClickListener { presenter.itemEditClickListener?.invoke(this) }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
