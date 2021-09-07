@@ -16,7 +16,8 @@ import javax.inject.Singleton
         CiceroneModule::class,
         AlphaVantageApiModule::class,
         AlphaVantageRepositoryModule::class,
-        UiSchedulerModule::class
+        UiSchedulerModule::class,
+        RoomTrackersRepositoryModule::class
     ]
 )
 interface AppComponent {
@@ -25,5 +26,5 @@ interface AppComponent {
     fun inject(mainPresenter: MainPresenter)
     fun inject(tickerSearchPresenter: TickerSearchPresenter)
     fun inject(usersTickersPresenter: UsersTickersPresenter)
-    fun inject(ticketsPresenter: TickerPresenter)
+    fun inject(tickerPresenter: TickerPresenter)
 }

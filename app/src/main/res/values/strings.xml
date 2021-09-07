@@ -2,4 +2,11 @@
     <string name="app_name">stock-stroke-alert</string>
     <string name="ticket_search_hint">Поиск тикера</string>
     <string name="users_tickers_list_is_empty">Здесь отображаются биржевые тикеры которые отслеживаются вашимими трекерами.\nПока не созданно ни одного трекера</string>
+    <string name="button_to_history">перейти к графику истории</string>
+    <string name="button_hide_history_preview">скрыть график</string>
+    <string name="button_show_history_preview">показать график</string>
+    <string name="button_switch_to_candlestick_chart">свечной</string>
+    <string name="button_switch_to_line_chart">линейный</string>
+    <string name="button_create_ticker">создать трекер</string>
+    <string name="tracker_difference_time_separator">за</string>
 </resources>

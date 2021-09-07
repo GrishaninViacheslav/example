@@ -1,3 +1,0 @@
-package io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories
-
-interface ITickersRepository : ITickerSearchEndpointRepository, ITickersInitialSuggestionsRepository
