@@ -1,12 +1,16 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert.domain.models
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+@Entity
 @Parcelize
 data class Ticker(
+    @PrimaryKey
     @SerializedName("1. symbol")
     @Expose
     val symbol: String,
@@ -17,7 +21,9 @@ data class Ticker(
 
     @SerializedName("3. type")
     @Expose
-    val type: String
+    val type: String,
+
+    var logoUrl: String? = null
 ) : Parcelable
 
 @Parcelize

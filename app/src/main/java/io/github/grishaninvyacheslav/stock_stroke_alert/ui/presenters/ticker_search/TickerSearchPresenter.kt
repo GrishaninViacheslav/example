@@ -76,7 +76,7 @@ class TickerSearchPresenter(
         val initialSuggestions = mutableListOf<Ticker>()
         val currSuggestions = mutableListOf<Ticker>()
 
-        override var itemEditClickListener: ((SuggestionItemView) -> Unit)? = null
+        override var itemClickListener: ((SuggestionItemView) -> Unit)? = null
 
         fun loadSuggestions() {
             disposables.add(
@@ -129,7 +129,7 @@ class TickerSearchPresenter(
         viewState.setQueryHint(App.instance.getString(R.string.ticket_search_hint))
         viewState.init()
         suggestionsListPresenter.loadSuggestions()
-        suggestionsListPresenter.itemEditClickListener = { itemView ->
+        suggestionsListPresenter.itemClickListener = { itemView ->
             router.navigateTo(Screens().ticker(suggestionsListPresenter.currSuggestions[itemView.pos]))
         }
     }

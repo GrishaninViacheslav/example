@@ -8,8 +8,9 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class Tracker(
-    @PrimaryKey(autoGenerate = true) var hash: Int? = null,
-    var trackedTicker: String? = null,
+    @PrimaryKey
+    var databaseId: Long? = null,
+    var trackedTicker: String? = null, // TODO: ForeignKey
     var lastTriggerProximity: Byte? = null,
     var triggerThreshold: String? = null,
     var differenceValue: String? = null,

@@ -1,5 +1,7 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search
 
-interface ITickerSuggestionsListPresenter : IListPresenter<SuggestionItemView>{
+import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.IListPresenter
+
+interface ITickerSuggestionsListPresenter : IListPresenter<SuggestionItemView> {
     fun filterSuggestions(charText: String)
 }

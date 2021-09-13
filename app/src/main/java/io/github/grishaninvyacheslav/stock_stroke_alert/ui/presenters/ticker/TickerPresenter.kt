@@ -119,14 +119,14 @@ class TickerPresenter(
         router.setResultListener(TRACKER_RESULT_KEY) {
             with(it as Tracker) {
                 viewState.showTrackerItem(pos)
-                trackersRepository.addTracker(this)
+                trackersRepository.updateTracker(this)
             }
         }
         router.setResultListener(TRACKER_REMOVE_RESULT_KEY) {
             with(it as Tracker) {
                 trackersListPresenter.trackers.remove(this)
                 viewState.updateTrackersList()
-                trackersRepository.delete(this)
+                trackersRepository.delete(this, ticker)
             }
         }
         router.navigateTo(screens.tracker(trackersListPresenter.trackers[pos]))
@@ -166,7 +166,7 @@ class TickerPresenter(
             }
         }
 
-        override var itemEditClickListener: ((TrackerItemView) -> Unit)? = null
+        override var itemClickListener: ((TrackerItemView) -> Unit)? = null
 
         val trackers = mutableListOf<Tracker>()
 
@@ -233,7 +233,7 @@ class TickerPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        trackersListPresenter.itemEditClickListener =
+        trackersListPresenter.itemClickListener =
             { trackerItemView -> editTracker(trackerItemView.pos) }
         trackersListPresenter.loadTrackers()
         viewState.init()
@@ -245,10 +245,10 @@ class TickerPresenter(
     fun createTicker() {
         router.setResultListener(TRACKER_RESULT_KEY) {
             with(it as Tracker) {
+                this.databaseId = trackersRepository.addTracker(this, ticker)
                 trackersListPresenter.trackers.add(this)
                 viewState.updateTrackersList()
                 viewState.showTrackerItem(trackersListPresenter.trackers.size - 1)
-                trackersRepository.addTracker(this)
             }
         }
         router.navigateTo(

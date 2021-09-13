@@ -7,5 +7,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface UsersTickersView : MvpView {
     fun setSearchButtonHint(hint: String)
-
+    fun init()
+    fun updateUsersTickersList()
 }

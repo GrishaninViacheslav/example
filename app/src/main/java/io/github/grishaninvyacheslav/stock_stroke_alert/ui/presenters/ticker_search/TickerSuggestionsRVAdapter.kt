@@ -21,7 +21,7 @@ class TickerSuggestionsRVAdapter(
                 false
             )
         ).apply {
-            itemView.setOnClickListener { presenter.itemEditClickListener?.invoke(this) }
+            itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =

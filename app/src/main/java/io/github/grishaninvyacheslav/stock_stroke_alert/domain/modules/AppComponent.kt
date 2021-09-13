@@ -6,7 +6,7 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker.Tic
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search.TickerSearchPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.tracker.TrackerPresenter
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.users_tickers.UsersTickersPresenter
-import io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.activities.MainActivity
+import io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.MainActivity
 import javax.inject.Singleton
 
 

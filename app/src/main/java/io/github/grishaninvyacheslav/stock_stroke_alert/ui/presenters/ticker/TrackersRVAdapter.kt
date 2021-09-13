@@ -20,7 +20,7 @@ class TrackersRVAdapter(
                 false
             )
         ).apply {
-            itemView.findViewById<MaterialButton>(R.id.button_edit).setOnClickListener { presenter.itemEditClickListener?.invoke(this) }
+            itemView.findViewById<MaterialButton>(R.id.button_edit).setOnClickListener { presenter.itemClickListener?.invoke(this) }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =

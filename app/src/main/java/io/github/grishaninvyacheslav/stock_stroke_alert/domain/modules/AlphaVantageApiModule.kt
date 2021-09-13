@@ -25,7 +25,7 @@ class AlphaVantageApiModule {
     fun baseUrl(): String = "https://www.alphavantage.co/"
 
     @Provides
-    fun provideApi(@Named("baseUrl") baseUrl: String, gson: Gson): IAlphaVantageDataSource =
+    fun provideTickerDataApi(@Named("baseUrl") baseUrl: String, gson: Gson): IAlphaVantageDataSource =
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(
@@ -57,7 +57,7 @@ object AlphaVantageApiInterceptor : Interceptor {
                     .build()
             )
         // TODO: header apikey отсутствует в запросе
-        Log.d("[MYLOG]", "requestUrl: ${response.request().url()}")
+        Log.d("[Interceptor]", "requestUrl: ${response.request().url()}")
         return response
     }
 }
