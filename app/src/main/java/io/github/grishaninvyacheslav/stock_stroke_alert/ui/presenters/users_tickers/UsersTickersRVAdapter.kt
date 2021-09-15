@@ -8,7 +8,7 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.App
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ItemUsersTickerBinding
 
 class UsersTickersRVAdapter(
-    val presenter: IUsersTickersListPresenter,
+    private val presenter: IUsersTickersListPresenter,
 ) : RecyclerView.Adapter<UsersTickersRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(

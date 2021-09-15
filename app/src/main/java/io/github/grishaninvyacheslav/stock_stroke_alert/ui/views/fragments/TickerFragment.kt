@@ -29,7 +29,6 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     private lateinit var unfoldIcon: Drawable
     private lateinit var foldIcon: Drawable
     private var hideHistoryPreviewButtonIconPadding by Delegates.notNull<Int>()
-
     private val view: FragmentTickerBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     private fun loadResources() {
@@ -40,33 +39,48 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }
 
     private fun buttonHideHistoryPreviewClickEvent() {
-        with(view) {
-            if (chart.visibility == VISIBLE) {
-                chart.visibility = GONE
-                chartInteractBlocker.visibility = GONE
-                buttonSwitchToCandlestickChart.visibility = GONE
-                buttonSwitchToLineChart.visibility = GONE
+        fun setChartsViewsVisibility(visibility: Int) {
+            with(view) {
+                chart.visibility = visibility
+                chartInteractBlocker.visibility = visibility
+                buttonSwitchToCandlestickChart.visibility = visibility
+                buttonSwitchToLineChart.visibility = visibility
+            }
+        }
+
+        fun hideChart() {
+            with(view) {
+                setChartsViewsVisibility(GONE)
                 hideHistoryPreviewButtonIconPadding = buttonHideHistoryPreview.iconPadding
                 buttonHideHistoryPreview.iconPadding =
                     -(buttonHideHistoryPreview.icon?.intrinsicWidth ?: 0)
                 buttonHideHistoryPreview.text =
                     getString(R.string.button_show_history_preview)
                 buttonHideHistoryPreview.icon = unfoldIcon
-            } else {
-                chart.visibility = VISIBLE
-                chartInteractBlocker.visibility = VISIBLE
-                buttonSwitchToCandlestickChart.visibility = VISIBLE
-                buttonSwitchToLineChart.visibility = VISIBLE
+            }
+        }
+
+        fun showChar() {
+            with(view) {
+                setChartsViewsVisibility(VISIBLE)
                 buttonHideHistoryPreview.iconPadding = hideHistoryPreviewButtonIconPadding
                 buttonHideHistoryPreview.text =
                     getString(R.string.button_hide_history_preview)
                 buttonHideHistoryPreview.icon = foldIcon
             }
         }
+
+        with(view) {
+            if (chart.visibility == VISIBLE) {
+                hideChart()
+            } else {
+                showChar()
+            }
+        }
     }
 
     val presenter: TickerPresenter by moxyPresenter {
-        TickerPresenter(arguments?.getParcelable<Ticker>(TICKER_ARG) as Ticker, getString(R.string.time_days), getString(R.string.time_hours), getString(R.string.time_minutes)).apply {
+        TickerPresenter(arguments?.getParcelable<Ticker>(TICKER_ARG) as Ticker).apply {
             App.instance.appComponent.inject(
                 this
             )
@@ -90,7 +104,7 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }.root
 
     companion object {
-        private const val TICKER_ARG = "TICKET"
+        private const val TICKER_ARG = "TICKER"
 
         fun newInstance(ticker: Ticker) = TickerFragment().apply {
             arguments = Bundle().apply {
@@ -112,26 +126,27 @@ class TickerFragment : MvpAppCompatFragment(), TickerView, BackButtonListener {
     }
 
     override fun setCurrQuote(quote: String) {
-        view.currQuote.text = quote
+        view.currQuote.text = String.format(getString(R.string.decimal_number_format), quote.toFloat())
     }
 
     override fun setQuoteChangeValue(change: Float) {
-        lateinit var changeSign: String
         if (change > 0) {
-            changeSign = "+"
             view.quoteChange.setTextColor(resources.getColor(R.color.green))
         } else if (change < 0) {
-            changeSign = "-"
             view.quoteChange.setTextColor(resources.getColor(R.color.red))
         } else {
-            changeSign = ""
             view.quoteChange.setTextColor(resources.getColor(R.color.blue))
         }
-        view.quoteChange.text = "$changeSign $change"
+        view.quoteChange.text = String.format(getString(R.string.decimal_number_format), change)
     }
 
     override fun setQuoteChangePercent(percent: Float) {
-        view.quoteChange.text = "${view.quoteChange.text} ($percent %)"
+        view.quoteChange.text = String.format(
+            getString(R.string.quote_change_with_percent),
+            view.quoteChange.text,
+            String.format(getString(R.string.decimal_number_format), percent),
+            getString(R.string.percent_symbol)
+        )
     }
 
     override fun updateChart(data: CandleData) {

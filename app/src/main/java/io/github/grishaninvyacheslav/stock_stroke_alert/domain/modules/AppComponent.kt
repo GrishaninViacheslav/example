@@ -9,7 +9,6 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.users_tick
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.views.MainActivity
 import javax.inject.Singleton
 
-
 @Singleton
 @Component(
     modules = [
@@ -17,7 +16,7 @@ import javax.inject.Singleton
         CiceroneModule::class,
         AlphaVantageApiModule::class,
         AlphaVantageRepositoryModule::class,
-        UiSchedulerModule::class,
+        SchedulersModule::class,
         RoomTrackersRepositoryModule::class
     ]
 )

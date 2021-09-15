@@ -5,17 +5,16 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.App
 import io.github.grishaninvyacheslav.stock_stroke_alert.R
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.ITickersRepository
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.schedulers.ISchedulers
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.Screens
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import moxy.MvpPresenter
 import javax.inject.Inject
 
 class TickerSearchPresenter(
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    val disposables: CompositeDisposable = CompositeDisposable()
 ) :
     MvpPresenter<TickerSearchView>() {
     private var currSuggestionDisposables: CompositeDisposable = CompositeDisposable()
@@ -24,7 +23,7 @@ class TickerSearchPresenter(
     lateinit var repository: ITickersRepository
 
     @Inject
-    lateinit var uiScheduler: Scheduler
+    lateinit var schedulers: ISchedulers
 
     val suggestionsListPresenter: TickerSuggestionsListPresenter =
         this.TickerSuggestionsListPresenter()
@@ -35,8 +34,8 @@ class TickerSearchPresenter(
                 initialSuggestions.addAll(value)
                 currSuggestionDisposables.add(
                     Single.just(value)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(uiScheduler)
+                        .subscribeOn(schedulers.background())
+                        .observeOn(schedulers.main())
                         .subscribeWith(InitialSuggestionsObserver())
                 )
             }
@@ -82,7 +81,7 @@ class TickerSearchPresenter(
             disposables.add(
                 repository
                     .getInitialSuggestions()
-                    .observeOn(uiScheduler)
+                    .observeOn(schedulers.main())
                     .subscribeWith(suggestionsLoadObserver)
             )
         }
@@ -98,7 +97,7 @@ class TickerSearchPresenter(
                 currSuggestionDisposables.add(
                     repository
                         .symbolSearch(charText)
-                        .observeOn(uiScheduler)
+                        .observeOn(schedulers.main())
                         .subscribeWith(CurrSuggestionsObserver())
                 )
                 disposables.add(currSuggestionDisposables)

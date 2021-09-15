@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ListViewItemsBinding
 
 class TickerSuggestionsRVAdapter(
-    val presenter: ITickerSuggestionsListPresenter,
+    private val presenter: ITickerSuggestionsListPresenter,
 ) : RecyclerView.Adapter<TickerSuggestionsRVAdapter.ViewHolder>() {
     fun filter(charText: String) {
         presenter.filterSuggestions(charText)

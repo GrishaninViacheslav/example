@@ -2,7 +2,6 @@ package io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositor
 
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
 import androidx.room.*
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Tracker
 
 @Dao
 interface TrackedTickersRepositoryDao {

@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 data class Tracker(
     @PrimaryKey
     var databaseId: Long? = null,
-    var trackedTicker: String? = null, // TODO: ForeignKey
+    var trackedTicker: String? = null, // TODO: Позже сделать ForeignKey для таблицы TrackedTicker
     var lastTriggerProximity: Byte? = null,
     var triggerThreshold: String? = null,
     var differenceValue: String? = null,
@@ -19,7 +19,7 @@ data class Tracker(
     var days: String? = null,
     var hours: String? = null,
     var minutes: String? = null,
-    var notifications: String = "" // TODO: ForeignKey
+    var notifications: String = "" // TODO: Позже сделать ForeignKey для таблицы Notification
 ) : Parcelable
 
 enum class UnitType(val value: String) {

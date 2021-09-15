@@ -7,11 +7,10 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.ITickersRepository
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.alphavantage.GlobalQuote
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.trackers.ITrackersRepository
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.schedulers.ISchedulers
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.IScreens
-import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import moxy.MvpPresenter
 import javax.inject.Inject
 
@@ -24,11 +23,11 @@ class UsersTickersPresenter(
             val items = List<Triple<Ticker, GlobalQuote?, Int?>>(values.size) { index ->
                 val ticker = values[index]
                 disposables.add(
-                    repository.currPrice(ticker.symbol).observeOn(uiScheduler)
+                    repository.currPrice(ticker.symbol).observeOn(schedulers.main())
                         .subscribeWith(TickerQuoteLoadObserver(index))
                 )
                 disposables.add(
-                    trackersRepository.getTickerTrackersCount(ticker.symbol).observeOn(uiScheduler)
+                    trackersRepository.getTickerTrackersCount(ticker.symbol).observeOn(schedulers.main())
                         .subscribeWith(TickerNotificationsCountLoadObserver(index))
                 )
                 Triple(ticker, null, null)
@@ -77,8 +76,7 @@ class UsersTickersPresenter(
         disposables.add(
             trackersRepository
                 .getTrackedTickers()
-                // TODO: вынести Schedulers.io() в Dagger
-                .observeOn(Schedulers.io())
+                .observeOn(schedulers.background())
                 .subscribeWith(TrackedSymbolsLoadObserver())
         )
     }
@@ -96,11 +94,14 @@ class UsersTickersPresenter(
     lateinit var repository: ITickersRepository
 
     @Inject
-    lateinit var uiScheduler: Scheduler
+    lateinit var schedulers: ISchedulers
+
+    @Inject
+    lateinit var app: App
 
     val usersTickersListPresenter: UsersTickersListPresenter = UsersTickersListPresenter()
 
-    class UsersTickersListPresenter : IUsersTickersListPresenter {
+    inner class UsersTickersListPresenter : IUsersTickersListPresenter {
         val tickersItems = mutableListOf<Triple<Ticker, GlobalQuote?, Int?>>()
 
         override var itemClickListener: ((TickerItemView) -> Unit)? = null
@@ -113,9 +114,16 @@ class UsersTickersPresenter(
                 setName(item.first.symbol)
                 item.first.logoUrl?.let { setLogo(it) }
                 item.second?.let {
-                    // TODO: вынести placeholder-ы в ресурсы
-                    setCurrQuote(String.format("%.2f", it.price.toDouble()))
-                    setQuoteChange("${String.format("%.2f", it.changePercent.substring(0, it.changePercent.length - 1).toDouble())}%")
+                    setCurrQuote(String.format(app.getString(R.string.decimal_number_format), it.price.toDouble()))
+                    val changePercentValue = String.format(app.getString(R.string.decimal_number_format), it.changePercent.substring(0, it.changePercent.length - 1).toFloat())
+                    val changeValue = String.format(app.getString(R.string.decimal_number_format), it.change.toFloat())
+                    setQuoteChange(
+                        String.format(
+                            app.getString(R.string.quote_change_with_percent),
+                            changeValue,
+                            changePercentValue,
+                            app.getString(R.string.percent_symbol))
+                    )
                 }
                 item.third?.let { setTrackersCount(it.toString()) }
             }

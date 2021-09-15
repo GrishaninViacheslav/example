@@ -1,12 +1,11 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.data.*
 import com.github.terrakok.cicerone.Router
+import io.github.grishaninvyacheslav.stock_stroke_alert.App
+import io.github.grishaninvyacheslav.stock_stroke_alert.R
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Quote
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Tracker
@@ -14,61 +13,33 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositori
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.Interval
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.alphavantage.GlobalQuote
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.trackers.ITrackersRepository
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.schedulers.ISchedulers
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.IScreens
-import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import moxy.MvpPresenter
 import java.lang.StringBuilder
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-
 
 class TickerPresenter(
     private val ticker: Ticker,
-    // TODO: куда вынести эти строки?
-    private val daysStringPlaceholder: String,
-    private val hoursStringPlaceholder: String,
-    private val minutesStringPlaceholder: String,
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    val disposables: CompositeDisposable = CompositeDisposable()
 ) : MvpPresenter<TickerView>() {
     private val intradayPriceLoadObserver =
         object : DisposableSingleObserver<Map<String, Quote>>() {
-            @SuppressLint("CheckResult")
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onSuccess(values: Map<String, Quote>) {
-                @RequiresApi(Build.VERSION_CODES.O)
-                fun parseDateToMilliseconds(date: String): Float {
-
-                    // TODO: UndeliverableException?
-
-                    val formatter: DateTimeFormatter =
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
-                    val localDate: LocalDateTime = LocalDateTime.parse(date, formatter)
-//                    val timeInMilliseconds: Long =
-//                        localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
-                    val minutes = localDate.minute + localDate.hour * 60
-                    return minutes.toFloat()
-                }
-
-                // TODO: вынести вычисления из ui потока
-                val entries: ArrayList<CandleEntry> = ArrayList()
-                // TODO:
+                val quotes = values.values.iterator()
                 var x = 0F
-                for (value in values) {
+                val entries: List<CandleEntry> = List(values.size) {
                     x += 1F
-                    with(value.value) {
-                        entries.add(
-                            CandleEntry(
-                                x,
-                                high.toFloat(),
-                                low.toFloat(),
-                                open.toFloat(),
-                                close.toFloat()
-                            )
+                    return@List with(quotes.next()) {
+                        CandleEntry(
+                            x,
+                            high.toFloat(),
+                            low.toFloat(),
+                            open.toFloat(),
+                            close.toFloat()
                         )
                     }
                 }
@@ -101,7 +72,7 @@ class TickerPresenter(
         disposables.add(
             repository
                 .intradayPrice(ticker.symbol, Interval.MIN_5)
-                .observeOn(uiScheduler)
+                .observeOn(schedulers.main())
                 .subscribeWith(intradayPriceLoadObserver)
         )
     }
@@ -110,7 +81,7 @@ class TickerPresenter(
         disposables.add(
             repository
                 .currPrice(ticker.symbol)
-                .observeOn(uiScheduler)
+                .observeOn(schedulers.main())
                 .subscribeWith(globalQuoteLoadObserver)
         )
     }
@@ -182,13 +153,28 @@ class TickerPresenter(
                     setDirection(differenceDirection!!)
                     val timeStringBuilder = StringBuilder()
                     if (days != "0") {
-                        timeStringBuilder.append(String.format(daysStringPlaceholder, days))
+                        timeStringBuilder.append(
+                            String.format(
+                                app.getString(R.string.time_days),
+                                days
+                            )
+                        )
                     }
                     if (hours != "0") {
-                        timeStringBuilder.append(String.format(hoursStringPlaceholder, hours))
+                        timeStringBuilder.append(
+                            String.format(
+                                app.getString(R.string.time_hours),
+                                hours
+                            )
+                        )
                     }
                     if (minutes != "0") {
-                        timeStringBuilder.append(String.format(minutesStringPlaceholder, minutes))
+                        timeStringBuilder.append(
+                            String.format(
+                                app.getString(R.string.time_minutes),
+                                minutes
+                            )
+                        )
                     }
                     setTime(timeStringBuilder.toString())
                 }
@@ -199,7 +185,7 @@ class TickerPresenter(
             disposables.add(
                 trackersRepository
                     .getTickerTrackers(ticker.symbol)
-                    .observeOn(uiScheduler)
+                    .observeOn(schedulers.main())
                     .subscribeWith(trackersLoadObserver)
 
             )
@@ -221,7 +207,10 @@ class TickerPresenter(
     lateinit var trackersRepository: ITrackersRepository
 
     @Inject
-    lateinit var uiScheduler: Scheduler
+    lateinit var schedulers: ISchedulers
+
+    @Inject
+    lateinit var app: App
 
     val chartPresenter = ChartPresenter()
 
@@ -262,7 +251,6 @@ class TickerPresenter(
     }
 
     fun backPressed(): Boolean {
-        // TODO: Как сделать так чтобы при backPressed() происходил переход на TickerSearch?
         router.exit()
         return true
     }

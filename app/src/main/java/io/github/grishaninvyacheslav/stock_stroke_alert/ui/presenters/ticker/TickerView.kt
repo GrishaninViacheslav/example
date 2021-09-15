@@ -1,7 +1,6 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker
 
 import com.github.mikephil.charting.data.CandleData
-import com.github.mikephil.charting.data.LineData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType

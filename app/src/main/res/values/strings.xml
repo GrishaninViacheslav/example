@@ -35,4 +35,7 @@
     <string name="time_days">%1$sд.</string>
     <string name="time_hours">%1$sч.</string>
     <string name="time_minutes">%1$sм.</string>
+    <string name="decimal_number_format">%.2f</string>
+    <string name="quote_change_with_percent">%1$s (%2$s%3$s)</string>
+    <string name="percent_symbol">%</string>
 </resources>
