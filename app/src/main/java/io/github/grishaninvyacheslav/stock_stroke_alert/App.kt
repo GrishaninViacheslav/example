@@ -1,26 +1,20 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert
 
-import android.app.Application
-import com.github.mikephil.charting.utils.Utils
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.AppComponent
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.AppModule
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.DaggerAppComponent
+import com.github.terrakok.cicerone.Cicerone
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.schedulers.DefaultSchedulers
+import io.github.grishaninvyacheslav.stock_stroke_alert.domain.modules.DaggerApplicationComponent
 
-class App : Application() {
-    companion object {
-        lateinit var instance: App
-    }
-
-    lateinit var appComponent: AppComponent
-
-    override fun onCreate() {
-        super.onCreate()
-        instance = this
-
-        appComponent = DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .build()
-
-        //Utils.init(instance)
-    }
+class App : DaggerApplication() {
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+        DaggerApplicationComponent
+            .builder()
+            .withContext(applicationContext)
+            .apply {
+                val cicerone = Cicerone.create()
+                withNavigatorHolder(cicerone.getNavigatorHolder())
+                withRouter(cicerone.router)
+                withSchedulers(DefaultSchedulers())
+            }.build()
 }

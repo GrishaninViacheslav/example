@@ -11,19 +11,18 @@ import javax.inject.Singleton
 
 @Module
 class CiceroneModule {
-
-    var cicerone: Cicerone<Router> = Cicerone.create()
-
-    @Provides
-    fun provideCicerone(): Cicerone<Router> = cicerone
-
-    @Singleton
-    @Provides
-    fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
-
-    @Singleton
-    @Provides
-    fun provideRouter(): Router = cicerone.router
+//    var cicerone: Cicerone<Router> = Cicerone.create()
+//
+//    @Provides
+//    fun provideCicerone(): Cicerone<Router> = cicerone
+//
+//    @Singleton
+//    @Provides
+//    fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
+//
+//    @Singleton
+//    @Provides
+//    fun provideRouter(): Router = cicerone.router
 
     @Singleton
     @Provides

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.android.AndroidInjection
 import io.github.grishaninvyacheslav.stock_stroke_alert.App
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.FragmentUsersTickersBinding
 import io.github.grishaninvyacheslav.stock_stroke_alert.ui.BackButtonListener
@@ -21,7 +22,7 @@ class UsersTickersFragment : MvpAppCompatFragment(), UsersTickersView, BackButto
     private val view: FragmentUsersTickersBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     val presenter: UsersTickersPresenter by moxyPresenter {
-        UsersTickersPresenter().apply { App.instance.appComponent.inject(this) }
+        UsersTickersPresenter().apply { AndroidInjection.inject(this) App.instance.appComponent.inject(this) }
     }
 
     var adapter: UsersTickersRVAdapter? = null

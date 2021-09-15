@@ -6,8 +6,10 @@ import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositori
 import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.repositories.tickers.Interval
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class TickerRepository(private val tickerDataApi: IAlphaVantageDataSource) :
+
+class TickerRepository @Inject constructor(private val tickerDataApi: IAlphaVantageDataSource) :
     ITickersRepository {
     override fun symbolSearch(keywords: String): Single<List<Ticker>> =
         tickerDataApi.symbolSearch(keywords)
