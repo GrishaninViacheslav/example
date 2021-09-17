@@ -4,11 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ListViewItemsBinding
-import io.github.grishaninvyacheslav.stock_stroke_alert.domain.models.Ticker
-import java.util.*
 
 class TickerSuggestionsRVAdapter(
-    val presenter: ITickerSuggestionsListPresenter,
+    private val presenter: ITickerSuggestionsListPresenter,
 ) : RecyclerView.Adapter<TickerSuggestionsRVAdapter.ViewHolder>() {
     fun filter(charText: String) {
         presenter.filterSuggestions(charText)

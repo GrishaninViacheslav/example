@@ -1,6 +1,6 @@
 package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker
 
-import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search.IItemView
+import io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.IItemView
 
 interface TrackerItemView : IItemView {
     fun setTriggerProximity(proximity: Byte)

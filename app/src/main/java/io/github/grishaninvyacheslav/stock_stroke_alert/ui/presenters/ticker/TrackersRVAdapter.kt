@@ -5,10 +5,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import io.github.grishaninvyacheslav.stock_stroke_alert.R
 import io.github.grishaninvyacheslav.stock_stroke_alert.databinding.ItemTickerTrackerBinding
 
 class TrackersRVAdapter(
-    val presenter: ITrackersListPresenter,
+    private val presenter: ITrackersListPresenter,
 ) : RecyclerView.Adapter<TrackersRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -18,7 +20,7 @@ class TrackersRVAdapter(
                 false
             )
         ).apply {
-            itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
+            itemView.findViewById<MaterialButton>(R.id.button_edit).setOnClickListener { presenter.itemClickListener?.invoke(this) }
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
@@ -31,7 +33,7 @@ class TrackersRVAdapter(
         override var pos = -1
 
         override fun setTriggerProximity(proximity: Byte) {
-            vb.triggerProximity.text = "$proximity%"
+            vb.triggerProximity.text = proximity.toString()
         }
 
         override fun setDifferenceValue(value: String) {
@@ -39,8 +41,9 @@ class TrackersRVAdapter(
         }
 
         override fun setDifferenceUnits(unit: String) {
+            // TODO: Используя Spans задать оформление для units
             vb.difference.text =
-                "${vb.difference.text}$unit" // TODO: использовать другое форомление для units
+                "${vb.difference.text}$unit"
         }
 
         override fun setDirection(direction: Byte) {

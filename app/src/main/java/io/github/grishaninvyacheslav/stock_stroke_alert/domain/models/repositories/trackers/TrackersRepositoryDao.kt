@@ -35,9 +35,12 @@ interface TrackersRepositoryDao {
     @Query("SELECT * FROM tracker")
     fun getAll(): List<Tracker>
 
+    @Query("SELECT COUNT(*) FROM tracker WHERE trackedTicker = :symbol")
+    fun getTickerTrackersCount(symbol: String): Int
+
     @Query("SELECT * FROM tracker WHERE trackedTicker = :symbol")
     fun getTickerTrackers(symbol: String): List<Tracker>
 
-    @Query("SELECT * FROM tracker WHERE hash = :hashSum LIMIT 1")
+    @Query("SELECT * FROM tracker WHERE databaseId = :hashSum LIMIT 1")
     fun getTrackerByHash(hashSum: String): Tracker
 }

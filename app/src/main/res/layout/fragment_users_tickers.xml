@@ -23,15 +23,12 @@
         app:layout_constraintRight_toRightOf="@id/to_search_button_background"
         app:layout_constraintTop_toTopOf="@id/to_search_button_background" />
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/users_tickers_list_is_empty"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/users_tickers_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/to_search_button"
-        android:textSize="20sp"/>
-
+        app:layout_constraintTop_toBottomOf="@id/to_search_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

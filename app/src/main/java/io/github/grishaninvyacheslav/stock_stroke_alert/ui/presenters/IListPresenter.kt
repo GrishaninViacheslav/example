@@ -1,4 +1,4 @@
-package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters.ticker_search
+package io.github.grishaninvyacheslav.stock_stroke_alert.ui.presenters
 
 interface IListPresenter<V : IItemView> {
     var itemClickListener: ((V) -> Unit)?
